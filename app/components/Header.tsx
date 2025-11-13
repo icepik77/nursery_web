@@ -1,0 +1,62 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link"; // 👈 импортируем Link
+import ShoppingCart from "./ShoppingCart";
+import Menu from "./Menu";
+import { useCart } from "../context/CartContext";
+import CartModal from "./CartModal";
+
+export default function Header() {
+  const [open, setOpen] = useState(false);
+  const [showCart, setShowCart] = useState(false);
+  const { cart } = useCart();
+  const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  return (
+    <header className="bg-[#00796B] text-white sticky top-0 z-50 shadow-md">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        {/* 👇 Логотип с переходом на главную */}
+        <Link href="/" className="flex items-center space-x-2">
+          <img src="/icon.png" alt="VetShop" className="w-8 h-8" />
+          <span className="text-xl font-semibold">VetShop</span>
+        </Link>
+
+        <nav className="hidden md:flex space-x-6">
+          <a href="/catalog" className="hover:text-[#EAD6B9] transition">Каталог</a>
+          <a href="/about" className="hover:text-[#EAD6B9] transition">О компании</a>
+          <a href="/blog" className="hover:text-[#EAD6B9] transition">Блог</a>
+          <a href="/contacts" className="hover:text-[#EAD6B9] transition">Контакты</a>
+        </nav>
+
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={() => setShowCart(true)}
+            className="flex items-center space-x-1 bg-[#EAD6B9] text-[#00796B] px-3 py-1.5 rounded-xl hover:bg-white transition"
+          >
+            <ShoppingCart size={18} />
+            <span className="hidden sm:inline font-medium">
+              Корзина ({totalCount})
+            </span>
+          </button>
+
+          <button onClick={() => setOpen(!open)} className="md:hidden">
+            <Menu size={24} />
+          </button>
+        </div>
+      </div>
+
+      {open && (
+        <div className="bg-[#00675B] md:hidden px-4 pb-4 space-y-2">
+          <Link href="/" className="block py-1 hover:text-[#EAD6B9]">Главная</Link>
+          <Link href="/catalog" className="block py-1 hover:text-[#EAD6B9]">Каталог</Link>
+          <Link href="/about" className="block py-1 hover:text-[#EAD6B9]">О компании</Link>
+          <Link href="/blog" className="block py-1 hover:text-[#EAD6B9]">Блог</Link>
+          <Link href="/contacts" className="block py-1 hover:text-[#EAD6B9]">Контакты</Link>
+        </div>
+      )}
+
+      {showCart && <CartModal onClose={() => setShowCart(false)} />}
+    </header>
+  );
+}
