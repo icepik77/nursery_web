@@ -1,5 +1,16 @@
-"use client";
 import React from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "О компании",
+  description: "О нашей компании",
+  openGraph: {
+    title: "О компании",
+    description: "Описание компании для продажи ветеринарных товаров",
+    locale: "ru_RU",
+    type: "website",
+  },
+};
 
 export default function AboutPage() {
   const partners = [
@@ -13,6 +24,39 @@ export default function AboutPage() {
     { id: 8, name: "PetWorld", logo: "/producers/udxfh7m8p19yzf07k2cz10ewytzj4w9a.jpg" },
   ];
 
+  const steps = [
+    {
+      id: 1,
+      title: "Принимаем заказ",
+      text: "Вы оформляете заказ на сайте или по телефону. Мы подтверждаем его в течение нескольких минут.",
+      image: "/steps/1.png",
+    },
+    {
+      id: 2,
+      title: "Подготавливаем продукцию",
+      text: "Проверяем наличие и качество препаратов. Отправляем только свежие и сертифицированные товары.",
+      image: "/steps/2.png",
+    },
+    {
+      id: 3,
+      title: "Отправляем заказ",
+      text: "Сотрудничаем с надёжными курьерскими службами, чтобы вы получили заказ максимально быстро.",
+      image: "/steps/3.png",
+    },
+    {
+      id: 4,
+      title: "Получаете и проверяете",
+      text: "При получении вы можете убедиться в целостности упаковки и правильности заказа.",
+      image: "/steps/4.png",
+    },
+    {
+      id: 5,
+      title: "Поддерживаем вас",
+      text: "Помогаем с любыми вопросами по применению препаратов и поддерживаем после покупки.",
+      image: "/steps/5.png",
+    },
+  ];
+
   return (
     <section className="max-w-full mx-auto py-12 px-4 bg-[#F9FAF4] flex flex-col items-center">
       {/* Заголовок */}
@@ -21,40 +65,71 @@ export default function AboutPage() {
       </h2>
 
       {/* Описание компании */}
-      <div className="max-w-3xl text-gray-700 text-center mb-10 leading-relaxed">
+      <div className="max-w-3xl text-gray-700 text-center mb-12 leading-relaxed">
         <p className="mb-4">
-          Наша компания работает на рынке уже более{" "}
-          <span className="font-semibold text-[#00796B]">7 лет</span>.  
-          За это время мы зарекомендовали себя как надежный партнёр для питомников, ветеринарных клиник и зоомагазинов.
+          Мы работаем на рынке более{" "}
+          <span className="font-semibold text-[#00796B]">7 лет</span> и
+          обеспечиваем ветеринарные клиники, питомники и зоомагазины качественными препаратами и товарами для животных.
         </p>
         <p>
-          Мы верим, что <span className="font-medium text-[#00796B]">долгосрочное сотрудничество</span> — это основа успеха,  
-          и именно поэтому с нами работают десятки компаний по всей стране.  
-          Мы ценим доверие наших партнёров и стремимся развиваться вместе с ними.
+          Главное для нас — <span className="font-medium text-[#00796B]">доверие и долгосрочное сотрудничество</span>.
+          Именно поэтому с нами работают десятки компаний по всей России.
         </p>
       </div>
 
-      {/* Блок с партнёрами */}
-      <h3 className="text-xl font-semibold text-[#00796B] mb-6 text-center">
-        Компании, с которыми мы сотрудничаем
-      </h3>
+      {/* Компании-партнёры */}
+      <div className="max-w-6xl w-full mb-20">
+        <h3 className="text-xl font-semibold text-[#00796B] mb-8 text-center">
+          Компании, которые работают с нами
+        </h3>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 max-w-5xl">
-        {partners.map((partner) => (
-          <div
-            key={partner.id}
-            className="border border-[#EAD6B9] bg-white rounded-2xl shadow-sm p-4 flex flex-col items-center justify-center hover:shadow-md transition"
-          >
-            <img
-              src={partner.logo}
-              alt={partner.name}
-              className="w-20 h-20 object-contain mb-2 grayscale hover:grayscale-0 transition"
-            />
-            <p className="text-sm font-medium text-gray-800 text-center">
-              {partner.name}
-            </p>
-          </div>
-        ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 place-items-center">
+          {partners.map((p) => (
+            <div
+              key={p.id}
+              className="flex flex-col items-center justify-center bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition border border-[#EAD6B9] w-40 h-40"
+            >
+              <img
+                src={p.logo}
+                alt={p.name}
+                className="w-24 h-24 object-contain mb-2"
+              />
+              <p className="text-sm font-medium text-[#00796B] text-center">
+                {p.name}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Как мы работаем */}
+      <div className="max-w-6xl w-full mb-10">
+        <h3 className="text-xl font-semibold text-[#00796B] mb-8 text-center">
+          Как мы работаем
+        </h3>
+
+        <div className="space-y-16">
+          {steps.map((step, index) => (
+            <div
+              key={step.id}
+              className={`flex flex-col md:flex-row items-center gap-10 ${
+                index % 2 === 1 ? "md:flex-row-reverse" : ""
+              }`}
+            >
+              <img
+                src={step.image}
+                alt={step.title}
+                className="w-full md:w-1/2 h-64 object-cover rounded-2xl shadow-md border border-[#EAD6B9]"
+              />
+              <div className="md:w-1/2 text-center md:text-left">
+                <h4 className="text-2xl font-semibold text-[#00796B] mb-3">
+                  {step.title}
+                </h4>
+                <p className="text-gray-700 leading-relaxed">{step.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

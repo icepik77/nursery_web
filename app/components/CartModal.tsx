@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { useCart } from "../context/CartContext";
-import { Trash2 } from "lucide-react"; // 👈 красивая иконка удаления
+import { Trash2 } from "lucide-react";
 
 type CartModalProps = {
   onClose: () => void;
@@ -17,10 +18,9 @@ export default function CartModal({ onClose }: CartModalProps) {
   );
 
   return (
-    // 👇 светлая прозрачность вместо чёрного затемнения
     <div className="fixed inset-0 bg-[#F9FAF4]/70 backdrop-blur-sm flex justify-end z-50">
       <div className="bg-[#F9FAF4] w-full sm:w-[420px] h-full p-6 overflow-y-auto shadow-lg relative border-l border-[#00796B]/20">
-        {/* кнопка закрытия */}
+        {/* Закрытие окна */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-[#00796B] hover:text-[#00564F] text-xl font-bold"
@@ -66,21 +66,23 @@ export default function CartModal({ onClose }: CartModalProps) {
               ))}
             </ul>
 
-            <div className="font-semibold text-lg mb-4 text-[#00796B] flex justify-between">
+            <div className="font-semibold text-lg mb-6 text-[#00796B] flex justify-between">
               <span>Итого:</span>
               <span>{totalPrice} ₽</span>
             </div>
 
-            <button
-              onClick={() => alert("Переход к оформлению заказа")}
-              className="w-full bg-[#00796B] text-white py-2 rounded-lg hover:bg-[#00564F] transition"
+            {/* ✅ Ссылка с закрытием модалки */}
+            <Link
+              href="/checkout"
+              onClick={onClose}
+              className="block w-full text-center bg-[#00796B] text-white py-3 rounded-lg hover:bg-[#00564F] transition"
             >
-              Оформить заказ
-            </button>
+              Перейти к оформлению
+            </Link>
 
             <button
               onClick={clearCart}
-              className="w-full mt-2 border border-[#00796B] text-[#00796B] py-2 rounded-lg hover:bg-white transition"
+              className="w-full mt-3 border border-[#00796B] text-[#00796B] py-3 rounded-lg hover:bg-white transition"
             >
               Очистить корзину
             </button>

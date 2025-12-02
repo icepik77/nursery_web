@@ -4,6 +4,8 @@ import "./globals.css";
 import { Footer } from "./components/Footer";
 import Header from "./components/Header";
 import { CartProvider } from "./context/CartContext";
+import { OrderProvider } from "./context/OrderContext";
+import { ProductFilterProvider } from "./context/ProductFilterContext";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -12,8 +14,8 @@ const urbanist = Urbanist({
 });
 
 export const metadata: Metadata = {
-  title: "Pet Accounting App",
-  description: "Monitor and manage your pets easily",
+  title: "Доббригс",
+  description: "Товары для животных",
 };
 
 export default function RootLayout({
@@ -24,11 +26,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${urbanist.variable} font-sans antialiased min-h-screen flex flex-col`}>
-        <CartProvider>
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-        </CartProvider>
+        <ProductFilterProvider>
+          <CartProvider>
+            <OrderProvider>
+              <Header />
+                <main className="flex-grow">{children}</main>
+              <Footer />
+            </OrderProvider>            
+          </CartProvider>
+        </ProductFilterProvider>
       </body>
     </html>
   );

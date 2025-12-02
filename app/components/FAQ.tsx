@@ -47,7 +47,7 @@ export const FAQ: React.FC = () => {
   };
 
   return (
-    <section className="max-w-5xl mx-auto py-12 px-4 bg-[#F9FAF4] flex flex-col items-center">
+    <section className="max-w-7xl mx-auto py-12 px-6 bg-[#F9FAF4] flex flex-col items-center">
       <h2 className="text-2xl md:text-3xl font-bold text-[#00796B] mb-6 text-center">
         Частые вопросы
       </h2>

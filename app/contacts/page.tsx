@@ -1,5 +1,19 @@
-"use client";
 import React from "react";
+
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Контакты",
+  description:
+    "Контакты от Добриггс",
+  openGraph: {
+    title: "Контакты Добригс",
+    description:
+      "Контакты от Добриггс",
+    locale: "ru_RU",
+    type: "website",
+  },
+};
 
 export default function AboutPage() {
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Link } from "lucide-react";
 
 export const Footer: React.FC = () => {
   return (
@@ -39,6 +39,9 @@ export const Footer: React.FC = () => {
             </li>
             <li className="flex items-center gap-2">
               <MapPin size={16} /> Москва, ул. Пушкинская, д. 10
+            </li>
+             <li className="flex items-center gap-2">
+              <a href="/">Согласие на обработку персональных данных</a>
             </li>
           </ul>
         </div>
