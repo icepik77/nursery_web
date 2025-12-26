@@ -29,57 +29,71 @@ export default function AboutPage() {
       id: 1,
       title: "Принимаем заказ",
       text: "Вы оформляете заказ на сайте или по телефону. Мы подтверждаем его в течение нескольких минут.",
-      image: "/steps/1.png",
     },
     {
       id: 2,
       title: "Подготавливаем продукцию",
       text: "Проверяем наличие и качество препаратов. Отправляем только свежие и сертифицированные товары.",
-      image: "/steps/2.png",
     },
     {
       id: 3,
       title: "Отправляем заказ",
       text: "Сотрудничаем с надёжными курьерскими службами, чтобы вы получили заказ максимально быстро.",
-      image: "/steps/3.png",
     },
     {
       id: 4,
       title: "Получаете и проверяете",
       text: "При получении вы можете убедиться в целостности упаковки и правильности заказа.",
-      image: "/steps/4.png",
     },
     {
       id: 5,
       title: "Поддерживаем вас",
       text: "Помогаем с любыми вопросами по применению препаратов и поддерживаем после покупки.",
-      image: "/steps/5.png",
     },
   ];
 
   return (
     <section className="max-w-full mx-auto py-12 px-4 bg-[#F9FAF4] flex flex-col items-center">
       {/* Заголовок */}
-      <h2 className="text-2xl font-bold text-[#00796B] mb-6 text-center">
+      <h2 className="text-3xl md:text-4xl font-bold text-[#00796B] mb-8 text-center">
         О компании
       </h2>
 
       {/* Описание компании */}
-      <div className="max-w-3xl text-gray-700 text-center mb-12 leading-relaxed">
+      {/* Описание компании */}
+      <div className="max-w-3xl text-gray-700 text-center mb-16 leading-relaxed text-lg">
         <p className="mb-4">
-          Мы работаем на рынке более{" "}
-          <span className="font-semibold text-[#00796B]">7 лет</span> и
-          обеспечиваем ветеринарные клиники, питомники и зоомагазины качественными препаратами и товарами для животных.
+          Мы работаем на рынке уже более{" "}
+          <span className="font-semibold text-[#00796B]">7 лет</span>, обеспечивая
+          ветеринарные клиники, питомники и зоомагазины по всей стране
+          сертифицированными препаратами, кормами и товарами для ухода за животными.
+          За это время мы сформировали партнёрскую сеть из более чем{" "}
+          <span className="font-semibold text-[#00796B]">120 организаций</span> и
+          выстроили стабильную систему поставок, охватывающую{" "}
+          <span className="font-semibold text-[#00796B]">40+ регионов</span>.
         </p>
+
+        <p className="mb-4">
+          Ежемесячно мы отгружаем свыше{" "}
+          <span className="font-semibold text-[#00796B]">18 000 единиц продукции</span>,
+          поддерживая на складе более{" "}
+          <span className="font-semibold text-[#00796B]">350 наименований</span>.
+          Благодаря собственной логистике мы обеспечиваем доставку в срок в{" "}
+          <span className="font-semibold text-[#00796B]">97% случаев</span>, даже в пиковые периоды.
+        </p>
+
         <p>
-          Главное для нас — <span className="font-medium text-[#00796B]">доверие и долгосрочное сотрудничество</span>.
-          Именно поэтому с нами работают десятки компаний по всей России.
+          Главное для нас —{" "}
+          <span className="font-medium text-[#00796B]">доверие и долгосрочное сотрудничество</span>.
+          Более <span className="font-semibold text-[#00796B]">70% наших клиентов</span> работают с нами
+          уже несколько лет, что подтверждает качество сервиса и надёжность поставок.
         </p>
       </div>
 
+
       {/* Компании-партнёры */}
       <div className="max-w-6xl w-full mb-20">
-        <h3 className="text-xl font-semibold text-[#00796B] mb-8 text-center">
+        <h3 className="text-2xl font-semibold text-[#00796B] mb-8 text-center">
           Компании, которые работают с нами
         </h3>
 
@@ -102,31 +116,29 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Как мы работаем */}
-      <div className="max-w-6xl w-full mb-10">
-        <h3 className="text-xl font-semibold text-[#00796B] mb-8 text-center">
+      {/* Как мы работаем (новый красивый стиль без картинок) */}
+      <div className="max-w-5xl w-full mb-16">
+        <h3 className="text-2xl md:text-3xl font-semibold text-[#00796B] mb-10 text-center">
           Как мы работаем
         </h3>
 
-        <div className="space-y-16">
+        <div className="grid md:grid-cols-2 gap-8">
           {steps.map((step, index) => (
             <div
               key={step.id}
-              className={`flex flex-col md:flex-row items-center gap-10 ${
-                index % 2 === 1 ? "md:flex-row-reverse" : ""
+              className={`flex flex-col justify-start p-6 rounded-2xl shadow-lg border border-[#EAD6B9] transition hover:scale-105 ${
+                index % 2 === 0 ? "bg-white" : "bg-[#E8F3F0]"
               }`}
             >
-              <img
-                src={step.image}
-                alt={step.title}
-                className="w-full md:w-1/2 h-64 object-cover rounded-2xl shadow-md border border-[#EAD6B9]"
-              />
-              <div className="md:w-1/2 text-center md:text-left">
-                <h4 className="text-2xl font-semibold text-[#00796B] mb-3">
+              <div className="flex items-center mb-4">
+                <div className="w-10 h-10 rounded-full bg-[#00796B] text-white flex items-center justify-center font-bold text-lg mr-4">
+                  {index + 1}
+                </div>
+                <h4 className="text-xl font-semibold text-[#00796B]">
                   {step.title}
                 </h4>
-                <p className="text-gray-700 leading-relaxed">{step.text}</p>
               </div>
+              <p className="text-gray-700 leading-relaxed">{step.text}</p>
             </div>
           ))}
         </div>

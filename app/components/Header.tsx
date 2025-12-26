@@ -25,7 +25,7 @@ export default function Header() {
 
         <nav className="hidden md:flex space-x-6">
           <a href="/" className="hover:text-[#EAD6B9] transition">Главная</a>
-          <a href="/catalog" className="hover:text-[#EAD6B9] transition">Каталог</a>
+          <a href="/shop" className="hover:text-[#EAD6B9] transition">Каталог</a>
           <a href="/about" className="hover:text-[#EAD6B9] transition">О компании</a>
           <a href="/news" className="hover:text-[#EAD6B9] transition">Новости</a>
           <a href="/contacts" className="hover:text-[#EAD6B9] transition">Контакты</a>
@@ -65,7 +65,7 @@ export default function Header() {
             Главная
           </Link>
           <Link
-            href="/catalog"
+            href="/shop"
             className="block py-1 hover:text-[#EAD6B9]"
             onClick={() => setOpen(false)}
           >

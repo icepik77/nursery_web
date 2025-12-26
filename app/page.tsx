@@ -23,7 +23,7 @@ import { Truck, ShieldCheck, Stethoscope, Users } from "lucide-react";
 const categories = [
   { name: "Антибиотики", image: "/antibiotic.png" },
   { name: "Витамины", image: "/vitamins.png" },
-  { name: "Вакцины", image: "/product.png" },
+  { name: "Вакцины", image: "/vaccine.png" },
   { name: "Игрушки", image: "/toys.png" },
   { name: "Корма", image: "/food.png" },
   { name: "Прочее", image: "/product.png" },
@@ -52,7 +52,7 @@ export default function Home() {
       title: "Бесплатная доставка",
       text: `Оформите заказ от ${DELIVERY_LIMIT} ₽ и доставка будет бесплатной.`,
       btn: "Перейти к товарам",
-      href: "/catalog",
+      href: "/shop",
     },
     {
       id: 3,
@@ -116,7 +116,7 @@ export default function Home() {
               {/* CTA кнопки */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                 <a
-                  href="/catalog"
+                  href="/shop"
                   className="px-8 py-4 bg-[#00796B] text-white rounded-2xl font-semibold shadow-md hover:opacity-90 transition"
                 >
                   Перейти в каталог
@@ -132,12 +132,12 @@ export default function Home() {
 
             {/* Правый блок — изображение */}
             <div className="flex-1 flex justify-center">
-              <img
-                src="/joe-caione-qO-PIF84Vxg-unsplash.jpg"
-                alt="Ветеринарные товары"
-                className="w-[380px] md:w-[480px] rounded-3xl shadow-md object-cover"
-              />
-            </div>
+  <img
+    src="/hero-img.png"
+    alt="Ветеринарные товары"
+    className="w-full max-w-[650px] rounded-3xl shadow-md object-cover"
+  />
+</div>
           </div>
         </section>
         <section className="py-16 bg-[#F9FAF4] text-[#00796B]">
@@ -150,7 +150,7 @@ export default function Home() {
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
-                  href="/catalog"
+                  href="/shop"
                   onClick={() => handleSelect(cat.name)}
                   className="relative group rounded-xl overflow-hidden shadow-md border border-[#00796B]/20 cursor-pointer"
                 >

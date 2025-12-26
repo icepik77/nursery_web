@@ -18,7 +18,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       onClick={() => router.push(`/product/${product.id}`)}
     >
       <img
-        src={product.image || "/product.png"}
+        src={"/product.png"}
         alt={product.name}
         className="h-48 w-full object-cover mb-4 rounded"
       />
