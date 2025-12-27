@@ -67,7 +67,7 @@ type OrderContextType = {
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
-const API_URL = "/api";
+const API_URL = "http://83.166.244.36:3000/api";
 
 /* =======================
    Provider
