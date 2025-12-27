@@ -23,7 +23,7 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({ currentProduct
         {related.map((product) => (
           <div key={product.id} className="bg-white p-4 rounded-xl shadow-md flex flex-col cursor-pointer">
             <img
-              src={product.image || "/product.png"}
+              src={ "/product.png"}
               alt={product.name}
               className="h-40 w-full object-cover rounded mb-3"
             />

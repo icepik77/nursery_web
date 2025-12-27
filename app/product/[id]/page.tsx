@@ -30,7 +30,7 @@ export default function ProductPage() {
         {/* Изображение товара */}
         <div className="md:w-1/2 flex justify-center items-center">
             <img
-            src={product.image || "/product.png"}
+            src={"/product.png"}
             alt={product.name}
             className="w-full h-auto max-h-96 object-cover rounded-xl"
             />

@@ -42,7 +42,7 @@ export default function CartModal({ onClose }: CartModalProps) {
                 >
                   <div className="flex items-center space-x-3">
                     <img
-                      src={item.image || "/product.png"}
+                      src={ "/product.png"}
                       alt={item.name}
                       className="w-16 h-16 rounded object-cover border border-[#00796B]/10"
                     />
