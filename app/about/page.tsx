@@ -97,7 +97,7 @@ export default function AboutPage() {
           Компании, которые работают с нами
         </h3>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 place-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-y-8 gap-x-2 place-items-center">
           {partners.map((p) => (
             <div
               key={p.id}

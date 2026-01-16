@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useOrders } from "../context/OrderContext";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/authContext";
 
 interface Props {
   onSuccess?: () => void;
@@ -12,6 +13,7 @@ interface Props {
 
 export default function CheckoutForm({ onSuccess }: Props) {
   const { cart, clearCart } = useCart();
+  const {user} = useAuth();
   const { createOrder, loading, error } = useOrders();
   const router = useRouter();
 
@@ -38,6 +40,8 @@ export default function CheckoutForm({ onSuccess }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log("user", user);
+
     if (!form.phone || !form.email || !form.address) {
       alert("Пожалуйста, заполните все поля");
       return;
@@ -51,12 +55,15 @@ export default function CheckoutForm({ onSuccess }: Props) {
     const payload = {
       phone: form.phone,
       email: form.email,
+      user_id: user?.id!,
       address: form.address,
       items: cart.map((item) => ({
         productId: item.id,
         quantity: item.quantity,
       })),
     };
+    
+    console.log("payload", payload);
 
     const order = await createOrder(payload);
 

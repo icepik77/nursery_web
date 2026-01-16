@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "../context/authContext";
 import { useState } from "react";
 
 interface User {
@@ -9,6 +10,8 @@ interface User {
 }
 
 export default function UserData() {
+  const { logout } = useAuth();
+
   const [user, setUser] = useState<User>({
     name: "Пользователь",
     email: "example@mail.ru",
@@ -21,7 +24,7 @@ export default function UserData() {
   const handleSave = () => {
     setUser(form);
     setIsEditing(false);
-    // ❗ позже — API запрос
+    // TODO: API request later
   };
 
   const handleCancel = () => {
@@ -31,15 +34,24 @@ export default function UserData() {
 
   return (
     <div className="bg-white rounded-2xl shadow p-6 mb-10">
-      <h3 className="text-xl font-semibold mb-4 text-[#00796B]">
-        Мои данные
-      </h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-semibold text-[#00796B]">
+          Мои данные
+        </h3>
+
+      </div>
 
       {!isEditing ? (
         <>
-          <p className="text-gray-700"><strong>Имя:</strong> {user.name}</p>
-          <p className="text-gray-700"><strong>Email:</strong> {user.email}</p>
-          <p className="text-gray-700"><strong>Телефон:</strong> {user.phone}</p>
+          <p className="text-gray-700">
+            <strong>Имя:</strong> {user.name}
+          </p>
+          <p className="text-gray-700">
+            <strong>Email:</strong> {user.email}
+          </p>
+          <p className="text-gray-700">
+            <strong>Телефон:</strong> {user.phone}
+          </p>
 
           <button
             onClick={() => setIsEditing(true)}
@@ -54,19 +66,25 @@ export default function UserData() {
             <input
               type="text"
               value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, name: e.target.value })
+              }
               className="border rounded-xl p-3 w-full"
             />
             <input
               type="email"
               value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, email: e.target.value })
+              }
               className="border rounded-xl p-3 w-full"
             />
             <input
               type="tel"
               value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, phone: e.target.value })
+              }
               className="border rounded-xl p-3 w-full"
             />
           </div>
@@ -87,6 +105,17 @@ export default function UserData() {
           </div>
         </>
       )}
-    </div>
+        <hr className="my-6" />
+
+        <div className="flex justify-end">
+          <button
+            onClick={logout}
+            className="text-red-600 border border-red-500 px-4 py-2 rounded-xl
+                      hover:bg-red-50 transition text-sm"
+          >
+            Выйти
+          </button>
+        </div>
+      </div>
   );
 }

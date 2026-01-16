@@ -11,6 +11,7 @@ import React, {
 /* =======================
    Types
 ======================= */
+import { useAuth, User } from "./authContext";
 
 export type OrderStatus =
   | "pending"
@@ -30,7 +31,7 @@ export type OrderItem = {
 
 export type Order = {
   id: string;
-  userId: string | null;
+  userId: string;
   total: number;
   phone: string;
   email: string;
@@ -40,15 +41,16 @@ export type Order = {
   items: OrderItem[];
 };
 
-type CreateOrderPayload = {
-  phone: string;
-  email: string;
-  address: string;
-  items: {
-    productId: number;
-    quantity: number;
-  }[];
-};
+  type CreateOrderPayload = {
+    phone: string;
+    user_id: string;
+    email: string;
+    address: string;
+    items: {
+      productId: number;
+      quantity: number;
+    }[];
+  };
 
 type OrderContextType = {
   orders: Order[];
@@ -77,6 +79,9 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const {user} = useAuth();
+
+  const user_id = user?.id;
 
   const token =
     typeof window !== "undefined"
@@ -93,24 +98,26 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   ======================= */
 
   const fetchOrders = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  if (!token) return; // 👈 prevent unauth calls
 
-    try {
-      const res = await fetch(`${API_URL}/orders`, {
-        headers,
-      });
+  console.log("TOKEN:", token);
+  console.log("HEADERS:", headers);
 
-      if (!res.ok) throw new Error("Failed to fetch orders");
+  setLoading(true);
+  setError(null);
 
-      const data: Order[] = await res.json();
-      setOrders(data);
-    } catch (err: any) {
-      setError(err.message ?? "Unknown error");
-    } finally {
-      setLoading(false);
-    }
-  }, [token]);
+  try {
+    const res = await fetch(`${API_URL}/orders`, { headers });
+    if (!res.ok) throw new Error("Failed to fetch orders");
+
+    const data: Order[] = await res.json();
+    setOrders(data);
+  } catch (err: any) {
+    setError(err.message ?? "Unknown error");
+  } finally {
+    setLoading(false);
+  }
+}, [token]);
 
   /* =======================
      Get order by ID
@@ -158,6 +165,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
       return null;
     } finally {
       setLoading(false);
+      fetchOrders();  
     }
   };
 

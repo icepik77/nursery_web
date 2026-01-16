@@ -1,7 +1,9 @@
 "use client";
 
+import { useAuth } from "../context/authContext";
 import { useOrders } from "../context/OrderContext";
 import { Order } from "../context/OrderContext";
+import { useEffect } from "react";
 
 const statusMap = {
   delivered: {
@@ -23,7 +25,26 @@ const statusMap = {
 };
 
 export default function OrdersList() {
-  const { orders } = useOrders();
+  const { orders, fetchOrders, loading, error } = useOrders();
+  const {token} = useAuth();
+
+  useEffect(() => {
+  if (token) {
+    fetchOrders();
+  }
+}, [token, fetchOrders]);
+
+   if (loading) {
+    return <p>Loading orders...</p>;
+  }
+
+  if (error) {
+    return <p className="text-red-500">{error}</p>;
+  }
+
+  if (orders.length === 0) {
+    return <p className="text-gray-600 text-center">У вас пока нет заказов</p>;
+  }
 
   return (
     <div className="bg-white rounded-2xl shadow p-6">
@@ -66,7 +87,7 @@ export default function OrdersList() {
                     <div className="flex items-center gap-3">
                       {item.product?.image && (
                         <img
-                          src={item.product.image}
+                          src={ "/product.png"}
                           alt={item.product.name}
                           className="w-10 h-10 rounded-lg object-cover"
                         />

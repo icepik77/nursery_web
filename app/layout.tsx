@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import { CartProvider } from "./context/CartContext";
 import { OrderProvider } from "./context/OrderContext";
 import { ProductFilterProvider } from "./context/ProductFilterContext";
+import { AuthProvider } from "./context/authContext";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -26,15 +27,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${urbanist.variable} font-sans antialiased min-h-screen flex flex-col`}>
-        <ProductFilterProvider>
-          <CartProvider>
-            <OrderProvider>
-              <Header />
-                <main className="flex-grow">{children}</main>
-              <Footer />
-            </OrderProvider>            
-          </CartProvider>
-        </ProductFilterProvider>
+        <AuthProvider>
+          <ProductFilterProvider>
+            <CartProvider>
+              <OrderProvider>
+                <Header />
+                  <main className="flex-grow">{children}</main>
+                <Footer />
+              </OrderProvider>            
+            </CartProvider>
+          </ProductFilterProvider>
+        </AuthProvider>
       </body>
     </html>
   );

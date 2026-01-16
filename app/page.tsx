@@ -132,12 +132,12 @@ export default function Home() {
 
             {/* Правый блок — изображение */}
             <div className="flex-1 flex justify-center">
-  <img
-    src="/hero-img.png"
-    alt="Ветеринарные товары"
-    className="w-full max-w-[650px] rounded-3xl shadow-md object-cover"
-  />
-</div>
+              <img
+                src="/1a5c7e7b-6a7b-420e-b1c1-7d166004f3cd.png"
+                alt="Ветеринарные товары"
+                className="w-full max-w-[650px] rounded-3xl shadow-md object-cover"
+              />
+            </div>
           </div>
         </section>
         <section className="py-16 bg-[#F9FAF4] text-[#00796B]">

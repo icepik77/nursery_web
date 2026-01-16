@@ -38,7 +38,7 @@ export default function AuthForm() {
     const body =
       mode === "login"
         ? {
-            login: form.login,
+            email: form.email,
             password: form.password,
           }
         : accountType === "individual"
@@ -135,10 +135,10 @@ export default function AuthForm() {
 
         {/* LOGIN */}
         <div>
-          <label className="block mb-1">Логин</label>
+          <label className="block mb-1">Эл. почта</label>
           <input
-            name="login"
-            value={form.login}
+            name="email"
+            value={form.email}
             onChange={handleChange}
             required
             className="w-full px-3 py-2 border rounded-lg"
