@@ -21,12 +21,12 @@ import { Truck, ShieldCheck, Stethoscope, Users } from "lucide-react";
 // };
 
 const categories = [
-  { name: "Антибиотики", image: "/antibiotic.png" },
-  { name: "Витамины", image: "/vitamins.png" },
-  { name: "Вакцины", image: "/vaccine.png" },
-  { name: "Игрушки", image: "/toys.png" },
-  { name: "Корма", image: "/food.png" },
-  { name: "Прочее", image: "/product.png" },
+  { name: "Антибиотики", image: "/antibiotic_2.png" },
+  { name: "Витамины", image: "/vitamins_2.png" },
+  { name: "Вакцины", image: "/vaccine_2.png" },
+  { name: "Игрушки", image: "/toys_2.png" },
+  { name: "Корма", image: "/food_2.png" },
+  { name: "Прочее", image: "/other_2.png" },
 ];
 
 export default function Home() {
@@ -135,7 +135,7 @@ export default function Home() {
               <img
                 src="/1a5c7e7b-6a7b-420e-b1c1-7d166004f3cd.png"
                 alt="Ветеринарные товары"
-                className="w-full max-w-[650px] rounded-3xl shadow-md object-cover"
+                className="w-full max-w-[650px] rounded-3xl  object-cover"
               />
             </div>
           </div>
@@ -165,7 +165,9 @@ export default function Home() {
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition duration-300" />
 
                   {/* Текст */}
-                  <span className="absolute bottom-3 left-1/2 -translate-x-1/2 text-white font-semibold text-xl drop-shadow-lg">
+                  <span className="absolute bottom-3 left-1/2 -translate-x-1/2 
+                    bg-[#00796B] text-white font-semibold text-xl
+                    px-3 py-1 rounded-[5px] drop-shadow-lg">
                     {cat.name}
                   </span>
                 </Link>

@@ -119,11 +119,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   /* ===== LOGOUT ===== */
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.clear();
-    router.replace("/login");
+  const logout = async () => {
+    try {
+      await fetch("http://83.166.244.36:3000/api/auth/logout", {
+        method: "POST",
+        credentials: "include", // IMPORTANT: sends cookies
+      });
+    } catch (err) {
+      console.error("Logout request failed:", err);
+    } finally {
+      setUser(null);
+      setToken(null);
+      localStorage.clear();
+      router.replace("/login");
+    }
   };
 
   return (
