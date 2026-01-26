@@ -7,12 +7,15 @@ import Menu from "./Menu";
 import { useCart } from "../context/CartContext";
 import CartModal from "./CartModal";
 import { FiUser } from "react-icons/fi";
+import { useAuth } from "../context/authContext";
+
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const { cart } = useCart();
   const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const {token} = useAuth();
 
   return (
     <header className="bg-[#00796B] text-white sticky top-0 z-50 shadow-md">
@@ -47,8 +50,9 @@ export default function Header() {
           </button>
 
           <Link
-            href="/profile"
+            href={token ? "/profile" : "/login"}
             className="hidden sm:flex items-center justify-center bg-white/20 p-2.5 rounded-xl hover:bg-white/30 transition"
+            title={token ? "Профиль" : "Войти"}
           >
             <FiUser size={22} />
           </Link>

@@ -15,10 +15,10 @@ export default function AuthForm() {
     email: "",
     password: "",
     phone: "",
-    fullName: "",
-    companyName: "",
+    fullname: "",
     inn: "",
     address: "",
+    contact_email: "",
   });
 
   const handleChange = (e: any) => {
@@ -41,39 +41,33 @@ export default function AuthForm() {
             email: form.email,
             password: form.password,
           }
-        : accountType === "individual"
-        ? {
-            type: "private",
-            login: form.login,
-            email: form.email,
-            password: form.password,
-            phone: form.phone,
-          }
         : {
-            type: "legal",
+            role: accountType,
             login: form.login,
             email: form.email,
             password: form.password,
             phone: form.phone,
-            fullName: form.fullName,
-            companyName: form.companyName,
-            inn: form.inn,
-            address: form.address,
+            fullname: accountType === "company" ? form.fullname : undefined,
+            inn: accountType === "company" ? form.inn : undefined,
+            address: accountType === "company" ? form.address : undefined,
+            contact_email:
+              accountType === "company" ? form.contact_email : undefined,
           };
 
     try {
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(body),
       });
 
       const data = await res.json();
 
-      if (!res.ok) throw new Error(data.error || data.message || "Ошибка");
+      if (!res.ok) throw new Error(data.error || "Ошибка");
 
       localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.accessToken);
 
       router.replace("/");
     } catch (err: any) {
@@ -83,7 +77,6 @@ export default function AuthForm() {
 
   return (
     <div className="max-w-md w-full mx-auto mt-10 bg-white rounded-2xl shadow-lg p-8">
-      {/* Вкладки вход/регистрация */}
       <div className="flex mb-6 border-b">
         <button
           onClick={() => setMode("login")}
@@ -132,110 +125,86 @@ export default function AuthForm() {
       {error && <p className="text-red-600 mb-3">{error}</p>}
 
       <form className="space-y-4" onSubmit={handleSubmit}>
-
-        {/* LOGIN */}
-        <div>
-          <label className="block mb-1">Эл. почта</label>
+        {mode === "register" && (
           <input
-            name="email"
-            value={form.email}
+            name="login"
+            placeholder="Логин"
+            value={form.login}
             onChange={handleChange}
             required
             className="w-full px-3 py-2 border rounded-lg"
           />
-        </div>
-
-        {/* Email */}
-        {mode === "register" && (
-          <div>
-            <label className="block mb-1">Email</label>
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border rounded-lg"
-            />
-          </div>
         )}
 
-        {/* Телефон — только при регистрации */}
+        <input
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          required
+          className="w-full px-3 py-2 border rounded-lg"
+        />
+
         {mode === "register" && (
-          <div>
-            <label className="block mb-1">Телефон</label>
-            <input
-              name="phone"
-              type="tel"
-              value={form.phone}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border rounded-lg"
-            />
-          </div>
+          <input
+            name="phone"
+            placeholder="Телефон"
+            value={form.phone}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border rounded-lg"
+          />
         )}
 
-        {/* Только для юридического лица */}
         {mode === "register" && accountType === "company" && (
           <>
-            <div>
-              <label className="block mb-1">ФИО ответственного</label>
-              <input
-                name="fullName"
-                value={form.fullName}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-lg"
-              />
-            </div>
+            <input
+              name="fullname"
+              placeholder="ФИО ответственного"
+              value={form.fullname}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded-lg"
+            />
 
-            <div>
-              <label className="block mb-1">Название компании</label>
-              <input
-                name="companyName"
-                value={form.companyName}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-lg"
-              />
-            </div>
+            <input
+              name="contact_email"
+              placeholder="Контактный Email"
+              value={form.contact_email}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded-lg"
+            />
 
-            <div>
-              <label className="block mb-1">ИНН</label>
-              <input
-                name="inn"
-                value={form.inn}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-lg"
-              />
-            </div>
+            <input
+              name="inn"
+              placeholder="ИНН"
+              value={form.inn}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded-lg"
+            />
 
-            <div>
-              <label className="block mb-1">Адрес</label>
-              <input
-                name="address"
-                value={form.address}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-lg"
-              />
-            </div>
+            <input
+              name="address"
+              placeholder="Адрес"
+              value={form.address}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded-lg"
+            />
           </>
         )}
 
-        {/* Password */}
-        <div>
-          <label className="block mb-1">Пароль</label>
-          <input
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border rounded-lg"
-          />
-        </div>
+        <input
+          name="password"
+          type="password"
+          placeholder="Пароль"
+          value={form.password}
+          onChange={handleChange}
+          required
+          className="w-full px-3 py-2 border rounded-lg"
+        />
 
         <button
           type="submit"
