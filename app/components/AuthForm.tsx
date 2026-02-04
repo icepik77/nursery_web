@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/authContext";
+
+import { setAccessToken } from "../api/authFetch";
 
 export default function AuthForm() {
   const router = useRouter();
@@ -9,6 +12,8 @@ export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [accountType, setAccountType] = useState<"individual" | "company">("individual");
   const [error, setError] = useState("");
+
+  const {setUserAndToken} = useAuth(); 
 
   const [form, setForm] = useState({
     login: "",
@@ -58,18 +63,23 @@ export default function AuthForm() {
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify(body),
+        credentials: "include",
       });
 
       const data = await res.json();
 
-      if (!res.ok) throw new Error(data.error || "Ошибка");
+      if (!res.ok) {
+        throw new Error(data.error || "Ошибка");
+      }
 
+      localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("token", data.accessToken);
 
-      router.replace("/");
+      setUserAndToken(data.user, data.accessToken); 
+      
+
+      router.replace("/profile");
     } catch (err: any) {
       setError(err.message);
     }

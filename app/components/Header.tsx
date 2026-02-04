@@ -7,7 +7,42 @@ import Menu from "./Menu";
 import { useCart } from "../context/CartContext";
 import CartModal from "./CartModal";
 import { FiUser } from "react-icons/fi";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { getAccessToken, setAccessToken } from "../api/authFetch";
+import { API_URL } from "../api/endpoints";
+import { useRouter } from "next/navigation";
 import { useAuth } from "../context/authContext";
+
+export async function authRedirect(router: AppRouterInstance) {
+
+
+  // 1. Если accessToken уже есть — сразу в профиль
+  if (getAccessToken()) {
+    router.push("/profile");
+    return;
+  }
+
+  try {
+    // 2. Пытаемся обновить через refresh
+    const res = await fetch(`${API_URL}/auth/refresh`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (!res.ok) throw new Error("No refresh");
+
+    const data = await res.json();
+
+    if (data?.accessToken) {
+      setAccessToken(data.accessToken);
+      router.push("/profile");
+    } else {
+      router.push("/login");
+    }
+  } catch {
+    router.push("/login");
+  }
+}
 
 
 export default function Header() {
@@ -16,6 +51,9 @@ export default function Header() {
   const { cart } = useCart();
   const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const {token} = useAuth();
+  const router = useRouter();
+
+  
 
   return (
     <header className="bg-[#00796B] text-white sticky top-0 z-50 shadow-md">
@@ -56,6 +94,12 @@ export default function Header() {
           >
             <FiUser size={22} />
           </Link>
+          {/* <button 
+          onClick={() => authRedirect(router)}
+            className="hidden sm:flex items-center justify-center bg-white/20 p-2.5 rounded-xl hover:bg-white/30 transition"
+            >
+            <FiUser size={22} />
+          </button> */}
         </div>
       </div>
 

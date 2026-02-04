@@ -1,5 +1,9 @@
 "use client";
 
+
+import { API_URL } from "../api/endpoints";
+import { useAuthFetch } from "../api/authFetch";
+
 import React, {
   createContext,
   useContext,
@@ -11,7 +15,7 @@ import React, {
 /* =======================
    Types
 ======================= */
-import { useAuth, User } from "./authContext";
+import { useAuth } from "./authContext";
 
 export type OrderStatus =
   | "pending"
@@ -69,7 +73,6 @@ type OrderContextType = {
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
-const API_URL = "http://83.166.244.36:3000/api";
 
 /* =======================
    Provider
@@ -80,13 +83,17 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const {user} = useAuth();
+  const authFetch = useAuthFetch();
+
 
   const user_id = user?.id;
 
-  const token =
-    typeof window !== "undefined"
-      ? localStorage.getItem("token")
-      : null;
+  // const token =
+  //   typeof window !== "undefined"
+  //     ? localStorage.getItem("accessToken")
+  //     : null;
+
+  const {token} = useAuth(); 
 
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -98,25 +105,22 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   ======================= */
 
   const fetchOrders = useCallback(async () => {
-  if (!token) return; // 👈 prevent unauth calls
+    setLoading(true);
+    setError(null);
 
-  console.log("TOKEN:", token);
-  console.log("HEADERS:", headers);
+    try {
+      const res = await authFetch(`${API_URL}/orders`);
+      
 
-  setLoading(true);
-  setError(null);
+      if (!res.ok) throw new Error("Failed to fetch orders");
 
-  try {
-    const res = await fetch(`${API_URL}/orders`, { headers });
-    if (!res.ok) throw new Error("Failed to fetch orders");
-
-    const data: Order[] = await res.json();
-    setOrders(data);
-  } catch (err: any) {
-    setError(err.message ?? "Unknown error");
-  } finally {
-    setLoading(false);
-  }
+      const data: Order[] = await res.json();
+      setOrders(data);
+    } catch (err: any) {
+      setError(err.message ?? "Unknown error");
+    } finally {
+      setLoading(false);
+    }
 }, [token]);
 
   /* =======================

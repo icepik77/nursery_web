@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "../api/endpoints";
+import { setAccessToken, getAccessToken } from "../api/authFetch";
 
 /* ================= TYPES ================= */
 
@@ -29,6 +31,15 @@ type AuthContextType = {
   logout: () => void;
 };
 
+function isTokenExpired(token: string): boolean {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.exp * 1000 < Date.now();
+  } catch {
+    return true;
+  }
+}
+
 const AuthContext = createContext<AuthContextType | null>(null);
 
 /* ================= PROVIDER ================= */
@@ -41,17 +52,87 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   /* ===== LOAD FROM LOCALSTORAGE ===== */
+
   useEffect(() => {
-    const savedToken = localStorage.getItem("token");
-    const savedUser = localStorage.getItem("user");
+    const initAuth = async () => {
+      const savedToken = localStorage.getItem("accessToken");
+      const savedUser = localStorage.getItem("user");
 
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(JSON.parse(savedUser));
-    }
+      // 1. Нет данных — не залогинен
+      if (!savedToken || !savedUser) {
+        setLoading(false);
+        return;
+      }
 
-    setLoading(false);
+      // 2. Access token жив
+      if (!isTokenExpired(savedToken)) {
+        setToken(savedToken);
+        setUser(JSON.parse(savedUser));
+        setLoading(false);
+        return;
+      }
+
+      // 3. Access token истёк → refresh
+      try {
+        const refreshRes = await fetch(`${API_URL}/auth/refresh`, {
+          method: "POST",
+          credentials: "include",
+        });
+
+        if (!refreshRes.ok) throw new Error("Refresh failed");
+
+        const { accessToken, user } = await refreshRes.json();
+
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("user", user);
+        setToken(accessToken);
+        setUser(JSON.parse(user));
+      } catch {
+        // ❗ refresh умер → полноценный logout
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("user");
+
+        await fetch(`${API_URL}/auth/logout`, {
+          method: "POST",
+          credentials: "include",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initAuth();
   }, []);
+
+
+    // useEffect(() => {
+    //   const savedToken = localStorage.getItem("token");
+    //   const savedUser = localStorage.getItem("user");
+    //   if (savedToken && savedUser) {
+    //     setToken(savedToken);
+    //     setUser(JSON.parse(savedUser));
+    //   }
+    //   setLoading(false);
+    // }, []);
+
+  // useEffect(() => {
+  //   fetch(`${API_URL}/auth/refresh`, {
+  //     method: "POST",
+  //     credentials: "include",
+  //   })
+  //     .then(res => res.ok ? res.json() : null)
+  //     .then(data => {
+  //       // console.log("data.accessToken", data.accessToken)
+  //       if (data?.accessToken) {
+  //         setAccessToken(data.accessToken);
+  //         const savedToken = data.accessToken;
+  //         setToken(savedToken);
+  //         const savedUser = localStorage.getItem("user");
+  //         if (savedUser) {setUser(JSON.parse(savedUser));}
+  //         setLoading(false);
+  //       }
+  //     });
+  // }, []);
 
   /* ===== SAVE USER & TOKEN ===== */
   const setUserAndToken = async (newUser: User, newToken: string) => {
@@ -131,6 +212,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(null);
       setToken(null);
       localStorage.clear();
+      setAccessToken("");
       router.replace("/login");
     }
   };
