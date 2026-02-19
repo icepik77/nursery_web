@@ -70,6 +70,7 @@ export default function Header() {
           <a href="/about" className="hover:text-[#EAD6B9] transition">О компании</a>
           <a href="/news" className="hover:text-[#EAD6B9] transition">Новости</a>
           <a href="/contacts" className="hover:text-[#EAD6B9] transition">Контакты</a>
+          <a href="/courses" className="hover:text-[#EAD6B9] transition">Занятия</a>
         </nav>
 
         <div className="flex items-center space-x-4">
@@ -139,6 +140,13 @@ export default function Header() {
             onClick={() => setOpen(false)}
           >
             Контакты
+          </Link>
+          <Link
+            href="/courses"
+            className="block py-1 hover:text-[#EAD6B9]"
+            onClick={() => setOpen(false)}
+          >
+            Занятия
           </Link>
           <Link
             href="/profile"
