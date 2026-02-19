@@ -5,6 +5,8 @@ import { FAQ } from "./components/FAQ";
 import { useProductFilters } from "./context/ProductFilterContext";
 import { Truck, ShieldCheck, Stethoscope, Users } from "lucide-react";
 
+//Старая верстка
+
 // import { Metadata } from "next";
 
 // export const metadata: Metadata = {
