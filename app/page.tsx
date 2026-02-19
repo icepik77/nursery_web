@@ -4,8 +4,7 @@ import Link from "next/link";
 import { FAQ } from "./components/FAQ";
 import { useProductFilters } from "./context/ProductFilterContext";
 import { Truck, ShieldCheck, Stethoscope, Users } from "lucide-react";
-
-//Старая верстка
+import HeroSlider from "./components/HeroSlider";
 
 // import { Metadata } from "next";
 
@@ -142,7 +141,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+        
         <section className="py-16 bg-[#F9FAF4] text-[#00796B]">
+          <HeroSlider/>
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-10">
               Популярные категории
